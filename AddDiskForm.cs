@@ -37,8 +37,64 @@ namespace KursOragnisation
 
 			foreach (DataRow manuf in manufs.Rows)
 			{
-				typeCombo.Items.Add(manuf["name"]);
+				manufacturerCombo.Items.Add(manuf["name"]);
 			}
+		}
+
+		private void AddButton_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				connection.Open();
+
+				string name = nameText.Text;
+				int copacity = Convert.ToInt32(copacityText.Text);
+				int rSpeed = Convert.ToInt32(rSpeedText.Text);
+				int wSpeed = Convert.ToInt32(wSpeedText.Text);
+
+				int type_id = 0;
+				foreach (DataRow type in types.Rows)
+				{
+					if (type["type"].ToString() == typeCombo.Text)
+					{
+						type_id = Convert.ToInt32(type["id"]);
+					}
+				}
+
+				int manuf_id = 0;
+				foreach (DataRow manuf in manufs.Rows)
+				{
+					if (manuf["name"].ToString() == manufacturerCombo.Text)
+					{
+						manuf_id = Convert.ToInt32(manuf["id"]);
+					}
+				}
+
+				if (copacity <= 0 || rSpeed <= 0 || wSpeed <= 0 || type_id == 0 || manuf_id == 0 || name == string.Empty)
+					throw new ArgumentException("Данные введены неверно");
+
+				SqlCommand insert = new SqlCommand("EXECUTE dbo.insertDisk @name, @type_id, @copacity, @maunfacturer_id, @rSpeed, @wSpeed", connection);
+				insert.Parameters.AddWithValue("@name", name);
+				insert.Parameters.AddWithValue("@type_id", type_id);
+				insert.Parameters.AddWithValue("@copacity", copacity);
+				insert.Parameters.AddWithValue("@maunfacturer_id", manuf_id);
+				insert.Parameters.AddWithValue("@rSpeed", rSpeed);
+				insert.Parameters.AddWithValue("@wSpeed", wSpeed);
+
+				insert.BeginExecuteNonQuery();
+
+				Close();
+			}
+			catch (Exception exc)
+			{
+				MessageBox.Show("Error: " + exc.Message);
+			}
+		}
+
+		private void AddDiskForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			connection.Close();
+			mainForm.updateView();
 		}
 	}
 }

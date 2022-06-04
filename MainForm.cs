@@ -24,8 +24,9 @@ namespace KursOragnisation
 			dataView.DataSource = currentData;
 		}
 
-		public void execLastCommand(SqlCommand command)
+		public void updateView()
 		{
+			connection.Open();
 			try
 			{
 				currentData.Clear();
@@ -78,6 +79,7 @@ namespace KursOragnisation
 
 		private void addButton_Click(object sender, EventArgs e)
 		{
+			connection.Close();
 			AddDiskForm add = new AddDiskForm(this, connection);
 			add.Show();
 		}

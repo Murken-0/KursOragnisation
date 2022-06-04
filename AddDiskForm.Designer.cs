@@ -156,6 +156,7 @@
 			this.addButton.TabIndex = 12;
 			this.addButton.Text = "Добавить";
 			this.addButton.UseVisualStyleBackColor = true;
+			this.addButton.Click += new System.EventHandler(this.AddButton_Click);
 			// 
 			// AddDiskForm
 			// 
@@ -178,6 +179,7 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Name = "AddDiskForm";
 			this.Text = "Добавить диск";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AddDiskForm_FormClosing);
 			this.Load += new System.EventHandler(this.AddDiskForm_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
