@@ -35,7 +35,6 @@ namespace KursOragnisation
 
 		public void UpdateView()
 		{
-
 			try
 			{
 				if (connection.State == ConnectionState.Closed)
@@ -54,9 +53,10 @@ namespace KursOragnisation
 
 		private void ExecSelect(SqlCommand command)
 		{
+			currentData.Clear();
+			currentData.Columns.Clear();
 			try
 			{
-				currentData.Clear();
 				adapter.SelectCommand = command;
 				adapter.Fill(currentData);
 				lastSelect = command;
@@ -69,14 +69,37 @@ namespace KursOragnisation
 
 		private void DiskTool_Click(object sender, EventArgs e)
 		{
+			SqlCommand disks = new SqlCommand(@"SELECT id, type_id, manufacturer_id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name) as 'Носитель информации', (SELECT t.type FROM Disk_type t WHERE d.type_id = t.id) as 'Тип устройства', 'Обьем' = CASE WHEN copacity >= 1000 THEN CONVERT(varchar(10), ROUND(CONVERT(float, copacity / 1000), 1)) + ' TB' WHEN copacity >= 1 and copacity <= 1000 THEN CONVERT(varchar(10), copacity) + ' GB' END, reading_speed as 'Скорость чтения', writing_speed as 'Скорость записи', rating as 'Рейтинг', price as 'Средняя цена' FROM Disk d", connection);
+			currentTable = TableEnum.Disk;
+			ExecSelect(disks);
 
+			dataView.Columns["id"].Visible = false;
+			dataView.Columns["type_id"].Visible = false;
+			dataView.Columns["manufacturer_id"].Visible = false;
 		}
+		private void ReviewTool_Click(object sender, EventArgs e)
+		{
+			SqlCommand reviews = new SqlCommand("SELECT id, disk_id, (SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, d.copacity) FROM Disk d WHERE d.id = r.disk_id) as 'Носитель информации', rating as 'Оценка', comment as 'Коментарий' FROM Review r", connection);
+			currentTable = TableEnum.Review;
+			ExecSelect(reviews);
 
+			dataView.Columns["id"].Visible = false;
+			dataView.Columns["disk_id"].Visible = false;
+		}
+		private void offerTool_Click(object sender, EventArgs e)
+		{
+			SqlCommand offers = new SqlCommand("SELECT id, disk_id, (SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, d.copacity) FROM Disk d WHERE d.id = o.disk_id) as 'Носитель информации', shop as 'Магазин', price as 'Цена', url as 'Ссылка' FROM Offer o", connection);
+			currentTable = TableEnum.Offer;
+			ExecSelect(offers);
+
+			dataView.Columns["id"].Visible = false;
+			dataView.Columns["disk_id"].Visible = false;
+		}
 		private void MainForm_Load(object sender, EventArgs e)
 		{
-			SqlCommand sql = new SqlCommand(@"SELECT id, type_id, manufacturer_id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name) as 'Носитель информации', (SELECT t.type FROM Disk_type t WHERE d.type_id = t.id) as 'Тип устройства', 'Обьем' = CASE WHEN copacity >= 1000 THEN CONVERT(varchar(10), ROUND(CONVERT(float, copacity / 1000), 1)) + ' TB' WHEN copacity >= 1 and copacity <= 1000 THEN CONVERT(varchar(10), copacity) + ' GB' END, reading_speed as 'Скорость чтения', writing_speed as 'Скорость записи', rating as 'Рейтинг', price as 'Средняя цена' FROM Disk d", connection);
+			SqlCommand disks = new SqlCommand(@"SELECT id, type_id, manufacturer_id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name) as 'Носитель информации', (SELECT t.type FROM Disk_type t WHERE d.type_id = t.id) as 'Тип устройства', 'Обьем' = CASE WHEN copacity >= 1000 THEN CONVERT(varchar(10), ROUND(CONVERT(float, copacity / 1000), 1)) + ' TB' WHEN copacity >= 1 and copacity <= 1000 THEN CONVERT(varchar(10), copacity) + ' GB' END, reading_speed as 'Скорость чтения', writing_speed as 'Скорость записи', rating as 'Рейтинг', price as 'Средняя цена' FROM Disk d", connection);
 			currentTable = TableEnum.Disk;
-			ExecSelect(sql);
+			ExecSelect(disks);
 
 			dataView.Columns["id"].Visible = false;
 			dataView.Columns["type_id"].Visible = false;
@@ -96,18 +119,23 @@ namespace KursOragnisation
 			switch (currentTable)
 			{
 				case TableEnum.Disk:
-					AddDiskForm add = new AddDiskForm(this, connection);
-					add.Show();
+					DiskForm addDisk = new DiskForm(this, connection);
+					addDisk.Show();
 					break;
 				case TableEnum.Review:
+					ReviewForm addReview = new ReviewForm(this, connection);
+					addReview.Show();
 					break;
 				case TableEnum.Offer:
+					OfferForm addOffer = new OfferForm(this, connection);
+					addOffer.Show();
 					break;
 				case TableEnum.Disk_type:
 					break;
 				case TableEnum.Manufacturer:
 					break;
 				case TableEnum.OtherSelection:
+					MessageBox.Show("Нельзя редактировать выборку");
 					break;
 				default:
 					throw new ArgumentException("В свич пришла какая-то фигня");
@@ -141,5 +169,6 @@ namespace KursOragnisation
 				MessageBox.Show("Error: " + exc.Message);
 			}
 		}
+
 	}
 }

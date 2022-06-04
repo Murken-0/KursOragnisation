@@ -5,7 +5,7 @@ using System.Data;
 
 namespace KursOragnisation
 {
-	public partial class AddDiskForm : Form
+	public partial class DiskForm : Form
 	{
 		MainForm mainForm;
 		SqlConnection connection;
@@ -13,7 +13,7 @@ namespace KursOragnisation
 
 		DataTable types = new DataTable();
 		DataTable manufs = new DataTable();
-		public AddDiskForm(MainForm mainForm, SqlConnection connection)
+		public DiskForm(MainForm mainForm, SqlConnection connection)
 		{
 			InitializeComponent();
 			this.mainForm = mainForm;

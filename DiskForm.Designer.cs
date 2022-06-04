@@ -1,6 +1,6 @@
 ﻿namespace KursOragnisation
 {
-	partial class AddDiskForm
+	partial class DiskForm
 	{
 		/// <summary>
 		/// Required designer variable.

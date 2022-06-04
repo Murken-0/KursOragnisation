@@ -120,12 +120,14 @@
 			this.reviewTool.Name = "reviewTool";
 			this.reviewTool.Size = new System.Drawing.Size(204, 22);
 			this.reviewTool.Text = "Отзывы";
+			this.reviewTool.Click += new System.EventHandler(this.ReviewTool_Click);
 			// 
 			// offerTool
 			// 
 			this.offerTool.Name = "offerTool";
 			this.offerTool.Size = new System.Drawing.Size(204, 22);
 			this.offerTool.Text = "Предложения";
+			this.offerTool.Click += new System.EventHandler(this.offerTool_Click);
 			// 
 			// manufacturerTool
 			// 
