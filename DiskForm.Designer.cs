@@ -50,7 +50,7 @@
 			this.label1.Location = new System.Drawing.Point(60, 32);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(122, 18);
-			this.label1.TabIndex = 0;
+			this.label1.TabIndex = 8;
 			this.label1.Text = "Производитель:";
 			// 
 			// label2
@@ -60,7 +60,7 @@
 			this.label2.Location = new System.Drawing.Point(114, 72);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(68, 18);
-			this.label2.TabIndex = 1;
+			this.label2.TabIndex = 9;
 			this.label2.Text = "Модель:";
 			// 
 			// label3
@@ -70,7 +70,7 @@
 			this.label3.Location = new System.Drawing.Point(145, 109);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(37, 18);
-			this.label3.TabIndex = 2;
+			this.label3.TabIndex = 10;
 			this.label3.Text = "Тип:";
 			// 
 			// label4
@@ -80,7 +80,7 @@
 			this.label4.Location = new System.Drawing.Point(89, 147);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(93, 18);
-			this.label4.TabIndex = 3;
+			this.label4.TabIndex = 11;
 			this.label4.Text = "Обьем (ГБ):";
 			// 
 			// label5
@@ -90,7 +90,7 @@
 			this.label5.Location = new System.Drawing.Point(51, 183);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(131, 18);
-			this.label5.TabIndex = 4;
+			this.label5.TabIndex = 12;
 			this.label5.Text = "Скорость чтения:";
 			// 
 			// copacityText
@@ -98,21 +98,21 @@
 			this.copacityText.Location = new System.Drawing.Point(188, 146);
 			this.copacityText.Name = "copacityText";
 			this.copacityText.Size = new System.Drawing.Size(177, 20);
-			this.copacityText.TabIndex = 5;
+			this.copacityText.TabIndex = 4;
 			// 
 			// rSpeedText
 			// 
 			this.rSpeedText.Location = new System.Drawing.Point(188, 182);
 			this.rSpeedText.Name = "rSpeedText";
 			this.rSpeedText.Size = new System.Drawing.Size(177, 20);
-			this.rSpeedText.TabIndex = 6;
+			this.rSpeedText.TabIndex = 5;
 			// 
 			// wSpeedText
 			// 
 			this.wSpeedText.Location = new System.Drawing.Point(188, 217);
 			this.wSpeedText.Name = "wSpeedText";
 			this.wSpeedText.Size = new System.Drawing.Size(177, 20);
-			this.wSpeedText.TabIndex = 7;
+			this.wSpeedText.TabIndex = 6;
 			// 
 			// label6
 			// 
@@ -121,7 +121,7 @@
 			this.label6.Location = new System.Drawing.Point(50, 218);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(132, 18);
-			this.label6.TabIndex = 8;
+			this.label6.TabIndex = 13;
 			this.label6.Text = "Скорость записи:";
 			// 
 			// nameText
@@ -129,7 +129,7 @@
 			this.nameText.Location = new System.Drawing.Point(188, 71);
 			this.nameText.Name = "nameText";
 			this.nameText.Size = new System.Drawing.Size(177, 20);
-			this.nameText.TabIndex = 9;
+			this.nameText.TabIndex = 1;
 			// 
 			// manufacturerCombo
 			// 
@@ -137,7 +137,7 @@
 			this.manufacturerCombo.Location = new System.Drawing.Point(188, 31);
 			this.manufacturerCombo.Name = "manufacturerCombo";
 			this.manufacturerCombo.Size = new System.Drawing.Size(177, 21);
-			this.manufacturerCombo.TabIndex = 10;
+			this.manufacturerCombo.TabIndex = 0;
 			// 
 			// typeCombo
 			// 
@@ -145,7 +145,7 @@
 			this.typeCombo.Location = new System.Drawing.Point(188, 108);
 			this.typeCombo.Name = "typeCombo";
 			this.typeCombo.Size = new System.Drawing.Size(177, 21);
-			this.typeCombo.TabIndex = 11;
+			this.typeCombo.TabIndex = 3;
 			// 
 			// addButton
 			// 
@@ -153,12 +153,12 @@
 			this.addButton.Location = new System.Drawing.Point(95, 261);
 			this.addButton.Name = "addButton";
 			this.addButton.Size = new System.Drawing.Size(224, 33);
-			this.addButton.TabIndex = 12;
+			this.addButton.TabIndex = 7;
 			this.addButton.Text = "Добавить";
 			this.addButton.UseVisualStyleBackColor = true;
 			this.addButton.Click += new System.EventHandler(this.AddButton_Click);
 			// 
-			// AddDiskForm
+			// DiskForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -177,7 +177,7 @@
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-			this.Name = "AddDiskForm";
+			this.Name = "DiskForm";
 			this.Text = "Добавить диск";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AddDiskForm_FormClosing);
 			this.Load += new System.EventHandler(this.AddDiskForm_Load);

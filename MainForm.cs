@@ -86,7 +86,7 @@ namespace KursOragnisation
 			dataView.Columns["id"].Visible = false;
 			dataView.Columns["disk_id"].Visible = false;
 		}
-		private void offerTool_Click(object sender, EventArgs e)
+		private void OfferTool_Click(object sender, EventArgs e)
 		{
 			SqlCommand offers = new SqlCommand("SELECT id, disk_id, (SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, d.copacity) FROM Disk d WHERE d.id = o.disk_id) as 'Носитель информации', shop as 'Магазин', price as 'Цена', url as 'Ссылка' FROM Offer o", connection);
 			currentTable = TableEnum.Offer;
@@ -94,6 +94,23 @@ namespace KursOragnisation
 
 			dataView.Columns["id"].Visible = false;
 			dataView.Columns["disk_id"].Visible = false;
+			dataView.Columns["Цена"].
+		}
+		private void ManufacturerTool_Click(object sender, EventArgs e)
+		{
+			SqlCommand manufs = new SqlCommand("SELECT id, name as 'Название', founding_date as 'Дата создания', country as 'Страна', founder as 'Основатели' FROM Manufacturer", connection);
+			currentTable = TableEnum.Manufacturer;
+			ExecSelect(manufs);
+
+			dataView.Columns["id"].Visible = false;
+		}
+		private void typeTool_Click(object sender, EventArgs e)
+		{
+			SqlCommand diskType = new SqlCommand("SELECT id, type as 'Тип' FROM Disk_type", connection);
+			currentTable = TableEnum.DiskType;
+			ExecSelect(diskType);
+
+			dataView.Columns["id"].Visible = false;
 		}
 		private void MainForm_Load(object sender, EventArgs e)
 		{
@@ -130,9 +147,13 @@ namespace KursOragnisation
 					OfferForm addOffer = new OfferForm(this, connection);
 					addOffer.Show();
 					break;
-				case TableEnum.Disk_type:
+				case TableEnum.DiskType:
+					TypeForm addType = new TypeForm(this, connection);
+					addType.Show();
 					break;
 				case TableEnum.Manufacturer:
+					ManufacturerForm addManufacturer = new ManufacturerForm(this, connection);
+					addManufacturer.Show();
 					break;
 				case TableEnum.OtherSelection:
 					MessageBox.Show("Нельзя редактировать выборку");

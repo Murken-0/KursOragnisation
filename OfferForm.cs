@@ -73,6 +73,5 @@ namespace KursOragnisation
 			connection.Close();
 			mainForm.UpdateView();
 		}
-
 	}
 }

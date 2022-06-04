@@ -11,7 +11,7 @@ namespace KursOragnisation
 		Disk,
 		Review,
 		Offer,
-		Disk_type,
+		DiskType,
 		Manufacturer,
 		OtherSelection
 	}

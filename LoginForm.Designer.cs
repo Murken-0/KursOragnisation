@@ -50,7 +50,7 @@
 			this.label1.Location = new System.Drawing.Point(60, 78);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(49, 16);
-			this.label1.TabIndex = 1;
+			this.label1.TabIndex = 4;
 			this.label1.Text = "Логин:";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
@@ -61,7 +61,7 @@
 			this.label2.Location = new System.Drawing.Point(50, 119);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(59, 16);
-			this.label2.TabIndex = 3;
+			this.label2.TabIndex = 5;
 			this.label2.Text = "Пароль:";
 			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
@@ -70,7 +70,7 @@
 			this.passwordTextBox.Location = new System.Drawing.Point(118, 117);
 			this.passwordTextBox.Name = "passwordTextBox";
 			this.passwordTextBox.Size = new System.Drawing.Size(247, 20);
-			this.passwordTextBox.TabIndex = 2;
+			this.passwordTextBox.TabIndex = 1;
 			// 
 			// label3
 			// 
@@ -91,7 +91,7 @@
 			this.enterButton.Location = new System.Drawing.Point(127, 168);
 			this.enterButton.Name = "enterButton";
 			this.enterButton.Size = new System.Drawing.Size(170, 40);
-			this.enterButton.TabIndex = 5;
+			this.enterButton.TabIndex = 3;
 			this.enterButton.Text = "Войти";
 			this.enterButton.UseVisualStyleBackColor = true;
 			this.enterButton.Click += new System.EventHandler(this.enterButton_Click);

@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.dataView = new System.Windows.Forms.DataGridView();
 			this.addButton = new System.Windows.Forms.Button();
 			this.updateButton = new System.Windows.Forms.Button();
@@ -49,8 +50,17 @@
 			this.dataView.AllowUserToAddRows = false;
 			this.dataView.AllowUserToDeleteRows = false;
 			this.dataView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+			this.dataView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
 			this.dataView.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dataView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.ControlLight;
+			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dataView.DefaultCellStyle = dataGridViewCellStyle1;
 			this.dataView.Location = new System.Drawing.Point(13, 70);
 			this.dataView.MultiSelect = false;
 			this.dataView.Name = "dataView";
@@ -127,19 +137,21 @@
 			this.offerTool.Name = "offerTool";
 			this.offerTool.Size = new System.Drawing.Size(204, 22);
 			this.offerTool.Text = "Предложения";
-			this.offerTool.Click += new System.EventHandler(this.offerTool_Click);
+			this.offerTool.Click += new System.EventHandler(this.OfferTool_Click);
 			// 
 			// manufacturerTool
 			// 
 			this.manufacturerTool.Name = "manufacturerTool";
 			this.manufacturerTool.Size = new System.Drawing.Size(204, 22);
 			this.manufacturerTool.Text = "Производители";
+			this.manufacturerTool.Click += new System.EventHandler(this.ManufacturerTool_Click);
 			// 
 			// typeTool
 			// 
 			this.typeTool.Name = "typeTool";
 			this.typeTool.Size = new System.Drawing.Size(204, 22);
 			this.typeTool.Text = "Типы носителей";
+			this.typeTool.Click += new System.EventHandler(this.typeTool_Click);
 			// 
 			// menuStrip1
 			// 
