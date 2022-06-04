@@ -10,11 +10,20 @@ namespace KursOragnisation
 	{
 		LoginForm loginForm;
 
-		private SqlConnection connection;
-		private TableEnum currentTable;
-		private DataTable currentData = new DataTable();
-		private SqlDataAdapter adapter = new SqlDataAdapter();
-		private SqlCommand lastCommand;
+		SqlConnection connection;
+		TableEnum currentTable;
+		DataTable currentData = new DataTable();
+		SqlDataAdapter adapter = new SqlDataAdapter();
+		SqlCommand lastSelect;
+
+		public MainForm()
+		{
+			InitializeComponent();
+			connection = new SqlConnection(@"Data Source=VLAD-PC\SQLEXPRESS;Initial Catalog=kursa4;User ID=Admin;Password=root");
+			connection.Open();
+			dataView.DataSource = currentData;
+		}
+
 		public MainForm(LoginForm f, SqlConnection connection)
 		{
 			InitializeComponent();
@@ -24,13 +33,17 @@ namespace KursOragnisation
 			dataView.DataSource = currentData;
 		}
 
-		public void updateView()
+		public void UpdateView()
 		{
-			connection.Open();
+
 			try
 			{
+				if (connection.State == ConnectionState.Closed)
+				{
+					connection.Open();
+				}
 				currentData.Clear();
-				adapter.SelectCommand = lastCommand;
+				adapter.SelectCommand = lastSelect;
 				adapter.Fill(currentData);
 			}
 			catch (Exception e)
@@ -39,23 +52,22 @@ namespace KursOragnisation
 			}
 		}
 
-		private void execCommand(SqlCommand command)
+		private void ExecSelect(SqlCommand command)
 		{
 			try
 			{
 				currentData.Clear();
 				adapter.SelectCommand = command;
 				adapter.Fill(currentData);
-				lastCommand = command;
+				lastSelect = command;
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				MessageBox.Show("Error: " + e.Message);
 			}
 		}
 
-
-		private void diskTool_Click(object sender, EventArgs e)
+		private void DiskTool_Click(object sender, EventArgs e)
 		{
 
 		}
@@ -64,7 +76,7 @@ namespace KursOragnisation
 		{
 			SqlCommand sql = new SqlCommand(@"SELECT id, type_id, manufacturer_id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name) as 'Носитель информации', (SELECT t.type FROM Disk_type t WHERE d.type_id = t.id) as 'Тип устройства', 'Обьем' = CASE WHEN copacity >= 1000 THEN CONVERT(varchar(10), ROUND(CONVERT(float, copacity / 1000), 1)) + ' TB' WHEN copacity >= 1 and copacity <= 1000 THEN CONVERT(varchar(10), copacity) + ' GB' END, reading_speed as 'Скорость чтения', writing_speed as 'Скорость записи', rating as 'Рейтинг', price as 'Средняя цена' FROM Disk d", connection);
 			currentTable = TableEnum.Disk;
-			execCommand(sql);
+			ExecSelect(sql);
 
 			dataView.Columns["id"].Visible = false;
 			dataView.Columns["type_id"].Visible = false;
@@ -74,14 +86,60 @@ namespace KursOragnisation
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			connection.Close();
-			loginForm.Show();
+			//loginForm.Show();
 		}
 
-		private void addButton_Click(object sender, EventArgs e)
+		private void AddButton_Click(object sender, EventArgs e)
 		{
 			connection.Close();
-			AddDiskForm add = new AddDiskForm(this, connection);
-			add.Show();
+
+			switch (currentTable)
+			{
+				case TableEnum.Disk:
+					AddDiskForm add = new AddDiskForm(this, connection);
+					add.Show();
+					break;
+				case TableEnum.Review:
+					break;
+				case TableEnum.Offer:
+					break;
+				case TableEnum.Disk_type:
+					break;
+				case TableEnum.Manufacturer:
+					break;
+				case TableEnum.OtherSelection:
+					break;
+				default:
+					throw new ArgumentException("В свич пришла какая-то фигня");
+			}
+		}
+
+		private void DeleteButton_Click(object sender, EventArgs e)
+		{
+			if (dataView.SelectedRows.Count != 1)
+			{
+				MessageBox.Show("Для удаления необходимо выбрать только одну строку");
+				return;
+			}
+			if (currentTable == TableEnum.OtherSelection)
+			{
+				MessageBox.Show("Нельзя удалить данные из выборки");
+				return;
+			}
+
+			int selectedRowId = Convert.ToInt32(currentData.Rows[dataView.SelectedRows[0].Index]["id"]);
+			SqlCommand delete = new SqlCommand("EXECUTE dbo.delete" + currentTable.ToString() + " @id", connection);
+			delete.Parameters.AddWithValue("@id", selectedRowId);
+
+			try
+			{
+				delete.ExecuteNonQuery();
+				UpdateView();
+			}
+			catch (Exception exc)
+			{
+				MessageBox.Show("Error: " + exc.Message);
+			}
 		}
 	}
 }

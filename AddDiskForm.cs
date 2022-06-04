@@ -81,7 +81,7 @@ namespace KursOragnisation
 				insert.Parameters.AddWithValue("@rSpeed", rSpeed);
 				insert.Parameters.AddWithValue("@wSpeed", wSpeed);
 
-				insert.BeginExecuteNonQuery();
+				insert.ExecuteNonQuery();
 
 				Close();
 			}
@@ -94,7 +94,7 @@ namespace KursOragnisation
 		private void AddDiskForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			connection.Close();
-			mainForm.updateView();
+			mainForm.UpdateView();
 		}
 	}
 }
