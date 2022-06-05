@@ -40,7 +40,7 @@
 			this.nameText = new System.Windows.Forms.TextBox();
 			this.manufacturerCombo = new System.Windows.Forms.ComboBox();
 			this.typeCombo = new System.Windows.Forms.ComboBox();
-			this.addButton = new System.Windows.Forms.Button();
+			this.button = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -147,23 +147,22 @@
 			this.typeCombo.Size = new System.Drawing.Size(177, 21);
 			this.typeCombo.TabIndex = 3;
 			// 
-			// addButton
+			// button
 			// 
-			this.addButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.addButton.Location = new System.Drawing.Point(95, 261);
-			this.addButton.Name = "addButton";
-			this.addButton.Size = new System.Drawing.Size(224, 33);
-			this.addButton.TabIndex = 7;
-			this.addButton.Text = "Добавить";
-			this.addButton.UseVisualStyleBackColor = true;
-			this.addButton.Click += new System.EventHandler(this.AddButton_Click);
+			this.button.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.button.Location = new System.Drawing.Point(95, 261);
+			this.button.Name = "button";
+			this.button.Size = new System.Drawing.Size(224, 33);
+			this.button.TabIndex = 7;
+			this.button.UseVisualStyleBackColor = true;
+			this.button.Click += new System.EventHandler(this.Button_Click);
 			// 
 			// DiskForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(424, 324);
-			this.Controls.Add(this.addButton);
+			this.Controls.Add(this.button);
 			this.Controls.Add(this.typeCombo);
 			this.Controls.Add(this.manufacturerCombo);
 			this.Controls.Add(this.nameText);
@@ -200,6 +199,6 @@
 		private System.Windows.Forms.TextBox nameText;
 		private System.Windows.Forms.ComboBox manufacturerCombo;
 		private System.Windows.Forms.ComboBox typeCombo;
-		private System.Windows.Forms.Button addButton;
+		private System.Windows.Forms.Button button;
 	}
 }

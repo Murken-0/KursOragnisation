@@ -32,7 +32,7 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.textTextBox = new System.Windows.Forms.TextBox();
-			this.addButton = new System.Windows.Forms.Button();
+			this.button = new System.Windows.Forms.Button();
 			this.ratingCombo = new System.Windows.Forms.ComboBox();
 			this.diskCombo = new System.Windows.Forms.ComboBox();
 			this.SuspendLayout();
@@ -75,16 +75,16 @@
 			this.textTextBox.Size = new System.Drawing.Size(304, 139);
 			this.textTextBox.TabIndex = 14;
 			// 
-			// addButton
+			// button
 			// 
-			this.addButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.addButton.Location = new System.Drawing.Point(124, 263);
-			this.addButton.Name = "addButton";
-			this.addButton.Size = new System.Drawing.Size(224, 33);
-			this.addButton.TabIndex = 15;
-			this.addButton.Text = "Добавить";
-			this.addButton.UseVisualStyleBackColor = true;
-			this.addButton.Click += new System.EventHandler(this.addButton_Click);
+			this.button.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.button.Location = new System.Drawing.Point(124, 263);
+			this.button.Name = "button";
+			this.button.Size = new System.Drawing.Size(224, 33);
+			this.button.TabIndex = 15;
+			this.button.Text = "Добавить";
+			this.button.UseVisualStyleBackColor = true;
+			this.button.Click += new System.EventHandler(this.Button_Click);
 			// 
 			// ratingCombo
 			// 
@@ -102,12 +102,12 @@
 			this.diskCombo.Size = new System.Drawing.Size(305, 21);
 			this.diskCombo.TabIndex = 12;
 			// 
-			// AddReviewForm
+			// ReviewForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(475, 321);
-			this.Controls.Add(this.addButton);
+			this.Controls.Add(this.button);
 			this.Controls.Add(this.textTextBox);
 			this.Controls.Add(this.ratingCombo);
 			this.Controls.Add(this.diskCombo);
@@ -115,10 +115,10 @@
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-			this.Name = "AddReviewForm";
+			this.Name = "ReviewForm";
 			this.Text = "AddReviewForm";
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AddReviewForm_FormClosing);
-			this.Load += new System.EventHandler(this.AddReviewForm_Load);
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ReviewForm_FormClosing);
+			this.Load += new System.EventHandler(this.ReviewForm_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -130,7 +130,7 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox textTextBox;
-		private System.Windows.Forms.Button addButton;
+		private System.Windows.Forms.Button button;
 		private System.Windows.Forms.ComboBox ratingCombo;
 		private System.Windows.Forms.ComboBox diskCombo;
 	}

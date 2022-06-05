@@ -36,7 +36,7 @@
 			this.datePicker = new System.Windows.Forms.DateTimePicker();
 			this.countryText = new System.Windows.Forms.TextBox();
 			this.founderText = new System.Windows.Forms.TextBox();
-			this.addButton = new System.Windows.Forms.Button();
+			this.button = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// label2
@@ -108,23 +108,23 @@
 			this.founderText.Size = new System.Drawing.Size(200, 20);
 			this.founderText.TabIndex = 20;
 			// 
-			// addButton
+			// button
 			// 
-			this.addButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.addButton.Location = new System.Drawing.Point(66, 166);
-			this.addButton.Name = "addButton";
-			this.addButton.Size = new System.Drawing.Size(224, 33);
-			this.addButton.TabIndex = 21;
-			this.addButton.Text = "Добавить";
-			this.addButton.UseVisualStyleBackColor = true;
-			this.addButton.Click += new System.EventHandler(this.AddButton_Click);
+			this.button.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.button.Location = new System.Drawing.Point(66, 166);
+			this.button.Name = "button";
+			this.button.Size = new System.Drawing.Size(224, 33);
+			this.button.TabIndex = 21;
+			this.button.Text = "Добавить";
+			this.button.UseVisualStyleBackColor = true;
+			this.button.Click += new System.EventHandler(this.AddButton_Click);
 			// 
 			// ManufacturerForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(362, 220);
-			this.Controls.Add(this.addButton);
+			this.Controls.Add(this.button);
 			this.Controls.Add(this.founderText);
 			this.Controls.Add(this.countryText);
 			this.Controls.Add(this.datePicker);
@@ -137,6 +137,7 @@
 			this.Name = "ManufacturerForm";
 			this.Text = "ManufacturerForm";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ManufacturerForm_FormClosing);
+			this.Load += new System.EventHandler(this.ManufacturerForm_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -152,6 +153,6 @@
 		private System.Windows.Forms.DateTimePicker datePicker;
 		private System.Windows.Forms.TextBox countryText;
 		private System.Windows.Forms.TextBox founderText;
-		private System.Windows.Forms.Button addButton;
+		private System.Windows.Forms.Button button;
 	}
 }

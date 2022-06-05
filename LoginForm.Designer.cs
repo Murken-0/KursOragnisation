@@ -94,7 +94,7 @@
 			this.enterButton.TabIndex = 3;
 			this.enterButton.Text = "Войти";
 			this.enterButton.UseVisualStyleBackColor = true;
-			this.enterButton.Click += new System.EventHandler(this.enterButton_Click);
+			this.enterButton.Click += new System.EventHandler(this.EnterButton_Click);
 			// 
 			// LoginForm
 			// 

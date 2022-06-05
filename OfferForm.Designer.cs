@@ -36,7 +36,7 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label7 = new System.Windows.Forms.Label();
-			this.addButton = new System.Windows.Forms.Button();
+			this.button = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// diskCombo
@@ -109,23 +109,23 @@
 			this.label7.Text = "Носитель\r\nинформации:";
 			this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
-			// addButton
+			// button
 			// 
-			this.addButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.addButton.Location = new System.Drawing.Point(82, 193);
-			this.addButton.Name = "addButton";
-			this.addButton.Size = new System.Drawing.Size(224, 33);
-			this.addButton.TabIndex = 13;
-			this.addButton.Text = "Добавить";
-			this.addButton.UseVisualStyleBackColor = true;
-			this.addButton.Click += new System.EventHandler(this.AddButton_Click);
+			this.button.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.button.Location = new System.Drawing.Point(82, 193);
+			this.button.Name = "button";
+			this.button.Size = new System.Drawing.Size(224, 33);
+			this.button.TabIndex = 13;
+			this.button.Text = "Добавить";
+			this.button.UseVisualStyleBackColor = true;
+			this.button.Click += new System.EventHandler(this.Button_Click);
 			// 
 			// OfferForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(385, 256);
-			this.Controls.Add(this.addButton);
+			this.Controls.Add(this.button);
 			this.Controls.Add(this.label4);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
@@ -154,6 +154,6 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.Button addButton;
+		private System.Windows.Forms.Button button;
 	}
 }

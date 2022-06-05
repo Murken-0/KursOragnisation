@@ -29,6 +29,7 @@
 		private void InitializeComponent()
 		{
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.dataView = new System.Windows.Forms.DataGridView();
 			this.addButton = new System.Windows.Forms.Button();
 			this.updateButton = new System.Windows.Forms.Button();
@@ -57,14 +58,22 @@
 			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
 			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.ControlLight;
-			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.MistyRose;
+			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
 			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 			this.dataView.DefaultCellStyle = dataGridViewCellStyle1;
 			this.dataView.Location = new System.Drawing.Point(13, 70);
 			this.dataView.MultiSelect = false;
 			this.dataView.Name = "dataView";
 			this.dataView.ReadOnly = true;
+			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.PapayaWhip;
+			dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.dataView.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
 			this.dataView.Size = new System.Drawing.Size(775, 368);
 			this.dataView.TabIndex = 2;
 			// 
@@ -86,6 +95,7 @@
 			this.updateButton.TabIndex = 4;
 			this.updateButton.Text = "Изменить";
 			this.updateButton.UseVisualStyleBackColor = true;
+			this.updateButton.Click += new System.EventHandler(this.UpdateButton_Click);
 			// 
 			// deleteButton
 			// 
@@ -151,7 +161,7 @@
 			this.typeTool.Name = "typeTool";
 			this.typeTool.Size = new System.Drawing.Size(204, 22);
 			this.typeTool.Text = "Типы носителей";
-			this.typeTool.Click += new System.EventHandler(this.typeTool_Click);
+			this.typeTool.Click += new System.EventHandler(this.TypeTool_Click);
 			// 
 			// menuStrip1
 			// 
@@ -179,7 +189,7 @@
 			this.MaximumSize = new System.Drawing.Size(816, 489);
 			this.MinimumSize = new System.Drawing.Size(816, 489);
 			this.Name = "MainForm";
-			this.Text = "MainForm";
+			this.Text = "отк";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			((System.ComponentModel.ISupportInitialize)(this.dataView)).EndInit();

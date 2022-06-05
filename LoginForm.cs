@@ -16,7 +16,7 @@ namespace KursOragnisation
 
 		}
 
-		private void enterButton_Click(object sender, EventArgs e)
+		private void EnterButton_Click(object sender, EventArgs e)
 		{
 			string connString = @"Data Source=" + @"VLAD-PC\SQLEXPRESS" + ";Initial Catalog="+ "kursa4"
 				+ ";User ID=" + loginTextBox.Text + ";Password=" + passwordTextBox.Text;

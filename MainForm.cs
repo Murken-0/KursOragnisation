@@ -60,6 +60,11 @@ namespace KursOragnisation
 				adapter.SelectCommand = command;
 				adapter.Fill(currentData);
 				lastSelect = command;
+
+				foreach (DataGridViewColumn column in dataView.Columns)
+				{
+					column.SortMode = DataGridViewColumnSortMode.NotSortable;
+				}
 			}
 			catch (Exception e)
 			{
@@ -76,6 +81,7 @@ namespace KursOragnisation
 			dataView.Columns["id"].Visible = false;
 			dataView.Columns["type_id"].Visible = false;
 			dataView.Columns["manufacturer_id"].Visible = false;
+			dataView.Columns["Средняя цена"].DefaultCellStyle.Format = "c";
 		}
 		private void ReviewTool_Click(object sender, EventArgs e)
 		{
@@ -94,7 +100,7 @@ namespace KursOragnisation
 
 			dataView.Columns["id"].Visible = false;
 			dataView.Columns["disk_id"].Visible = false;
-			dataView.Columns["Цена"].
+			dataView.Columns["Цена"].DefaultCellStyle.Format = "c";
 		}
 		private void ManufacturerTool_Click(object sender, EventArgs e)
 		{
@@ -104,7 +110,7 @@ namespace KursOragnisation
 
 			dataView.Columns["id"].Visible = false;
 		}
-		private void typeTool_Click(object sender, EventArgs e)
+		private void TypeTool_Click(object sender, EventArgs e)
 		{
 			SqlCommand diskType = new SqlCommand("SELECT id, type as 'Тип' FROM Disk_type", connection);
 			currentTable = TableEnum.DiskType;
@@ -121,6 +127,7 @@ namespace KursOragnisation
 			dataView.Columns["id"].Visible = false;
 			dataView.Columns["type_id"].Visible = false;
 			dataView.Columns["manufacturer_id"].Visible = false;
+			dataView.Columns["Средняя цена"].DefaultCellStyle.Format = "c";
 		}
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -162,7 +169,52 @@ namespace KursOragnisation
 					throw new ArgumentException("В свич пришла какая-то фигня");
 			}
 		}
+		private void UpdateButton_Click(object sender, EventArgs e)
+		{
+			connection.Close();
 
+			if (dataView.SelectedRows.Count != 1)
+			{
+				MessageBox.Show("Для удаления необходимо выбрать только одну строку");
+				return;
+			}
+			if (currentTable == TableEnum.OtherSelection)
+			{
+				MessageBox.Show("Нельзя удалить данные из выборки");
+				return;
+			}
+
+			int id = Convert.ToInt32(currentData.Rows[dataView.SelectedRows[0].Index]["id"]);
+
+			switch (currentTable)
+			{
+				case TableEnum.Disk:
+					DiskForm addDisk = new DiskForm(this, connection, id);
+					addDisk.Show();
+					break;
+				case TableEnum.Review:
+					ReviewForm addReview = new ReviewForm(this, connection, id);
+					addReview.Show();
+					break;
+				case TableEnum.Offer:
+					OfferForm addOffer = new OfferForm(this, connection, id);
+					addOffer.Show();
+					break;
+				case TableEnum.DiskType:
+					TypeForm addType = new TypeForm(this, connection, id);
+					addType.Show();
+					break;
+				case TableEnum.Manufacturer:
+					ManufacturerForm addManufacturer = new ManufacturerForm(this, connection, id);
+					addManufacturer.Show();
+					break;
+				case TableEnum.OtherSelection:
+					MessageBox.Show("Нельзя редактировать выборку");
+					break;
+				default:
+					throw new ArgumentException("В свич пришла какая-то фигня");
+			}
+		}
 		private void DeleteButton_Click(object sender, EventArgs e)
 		{
 			if (dataView.SelectedRows.Count != 1)
@@ -190,6 +242,5 @@ namespace KursOragnisation
 				MessageBox.Show("Error: " + exc.Message);
 			}
 		}
-
 	}
 }
