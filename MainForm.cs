@@ -11,10 +11,18 @@ namespace KursOragnisation
 		LoginForm loginForm;
 
 		SqlConnection connection;
+		SqlDataAdapter adapter = new SqlDataAdapter();
+
 		TableEnum currentTable;
 		DataTable currentData = new DataTable();
-		SqlDataAdapter adapter = new SqlDataAdapter();
 		SqlCommand lastSelect;
+
+		List<Control> searchDiskElements;
+
+		List<Control> searchReviewOrOfferElements;
+		DataTable disksWithId = new DataTable();
+
+
 
 		public MainForm()
 		{
@@ -22,6 +30,10 @@ namespace KursOragnisation
 			connection = new SqlConnection(@"Data Source=VLAD-PC\SQLEXPRESS;Initial Catalog=kursa4;User ID=Admin;Password=root");
 			connection.Open();
 			dataView.DataSource = currentData;
+			searchDiskElements = new List<Control>() { paramsForFindingCombo, findingValueText, findButton };
+			searchReviewOrOfferElements = new List<Control>() { disksCombo, findButton };
+			string[] items = { "Средняя цена выше, чем:", "Средняя цена ниже, чем:", "Рейтинг выше, чем:", "Рейтинг ниже, чем:" };
+			paramsForFindingCombo.Items.AddRange(items);
 		}
 
 		public MainForm(LoginForm f, SqlConnection connection)
@@ -31,6 +43,10 @@ namespace KursOragnisation
 			this.connection = connection;
 			connection.Open();
 			dataView.DataSource = currentData;
+			searchDiskElements = new List<Control>() { paramsForFindingCombo, findingValueText, findButton };
+			searchReviewOrOfferElements = new List<Control>() { disksCombo, findButton };
+			string[] items = { "Средняя цена выше, чем:", "Средняя цена ниже, чем:", "Рейтинг выше, чем:", "Рейтинг ниже, чем:" };
+			paramsForFindingCombo.Items.AddRange(items);
 		}
 
 		public void UpdateView()
@@ -82,25 +98,74 @@ namespace KursOragnisation
 			dataView.Columns["type_id"].Visible = false;
 			dataView.Columns["manufacturer_id"].Visible = false;
 			dataView.Columns["Средняя цена"].DefaultCellStyle.Format = "c";
+
+			foreach (Control item in searchReviewOrOfferElements)
+			{
+				item.Visible = false;
+			}
+			foreach (Control item in searchDiskElements)
+			{
+				item.Visible = true;
+			}
 		}
 		private void ReviewTool_Click(object sender, EventArgs e)
 		{
-			SqlCommand reviews = new SqlCommand("SELECT id, disk_id, (SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, d.copacity) FROM Disk d WHERE d.id = r.disk_id) as 'Носитель информации', rating as 'Оценка', comment as 'Коментарий' FROM Review r", connection);
+			SqlCommand reviews = new SqlCommand("SELECT id, disk_id, (SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', d.copacity) FROM Disk d WHERE d.id = r.disk_id) as 'Носитель информации', rating as 'Оценка', comment as 'Коментарий' FROM Review r", connection);
 			currentTable = TableEnum.Review;
 			ExecSelect(reviews);
 
 			dataView.Columns["id"].Visible = false;
 			dataView.Columns["disk_id"].Visible = false;
+
+			disksWithId.Clear();
+			SqlCommand getDisks = new SqlCommand("SELECT id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', copacity) as 'disk' FROM Disk d", connection);
+			adapter.SelectCommand = getDisks;
+			adapter.Fill(disksWithId);
+
+			disksCombo.Items.Clear();
+			foreach (DataRow disk in disksWithId.Rows)
+			{
+				disksCombo.Items.Add(disk["disk"]);
+			}
+
+			foreach (Control item in searchDiskElements)
+			{
+				item.Visible = false;
+			}
+			foreach (Control item in searchReviewOrOfferElements)
+			{
+				item.Visible = true;
+			}
 		}
 		private void OfferTool_Click(object sender, EventArgs e)
 		{
-			SqlCommand offers = new SqlCommand("SELECT id, disk_id, (SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, d.copacity) FROM Disk d WHERE d.id = o.disk_id) as 'Носитель информации', shop as 'Магазин', price as 'Цена', url as 'Ссылка' FROM Offer o", connection);
+			SqlCommand offers = new SqlCommand("SELECT id, disk_id, (SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', d.copacity) FROM Disk d WHERE d.id = o.disk_id) as 'Носитель информации', shop as 'Магазин', price as 'Цена', url as 'Ссылка' FROM Offer o", connection);
 			currentTable = TableEnum.Offer;
 			ExecSelect(offers);
 
 			dataView.Columns["id"].Visible = false;
 			dataView.Columns["disk_id"].Visible = false;
 			dataView.Columns["Цена"].DefaultCellStyle.Format = "c";
+
+			disksWithId.Clear();
+			SqlCommand getDisks = new SqlCommand("SELECT id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', copacity) as 'disk' FROM Disk d", connection);
+			adapter.SelectCommand = getDisks;
+			adapter.Fill(disksWithId);
+
+			disksCombo.Items.Clear();
+			foreach (DataRow disk in disksWithId.Rows)
+			{
+				disksCombo.Items.Add(disk["disk"]);
+			}
+
+			foreach (Control item in searchDiskElements)
+			{
+				item.Visible = false;
+			}
+			foreach (Control item in searchReviewOrOfferElements)
+			{
+				item.Visible = true;
+			}
 		}
 		private void ManufacturerTool_Click(object sender, EventArgs e)
 		{
@@ -109,6 +174,15 @@ namespace KursOragnisation
 			ExecSelect(manufs);
 
 			dataView.Columns["id"].Visible = false;
+
+			foreach (Control item in searchDiskElements)
+			{
+				item.Visible = false;
+			}
+			foreach (Control item in searchReviewOrOfferElements)
+			{
+				item.Visible = false;
+			}
 		}
 		private void TypeTool_Click(object sender, EventArgs e)
 		{
@@ -117,6 +191,15 @@ namespace KursOragnisation
 			ExecSelect(diskType);
 
 			dataView.Columns["id"].Visible = false;
+
+			foreach (Control item in searchDiskElements)
+			{
+				item.Visible = false;
+			}
+			foreach (Control item in searchReviewOrOfferElements)
+			{
+				item.Visible = false;
+			}
 		}
 		private void MainForm_Load(object sender, EventArgs e)
 		{
@@ -128,6 +211,15 @@ namespace KursOragnisation
 			dataView.Columns["type_id"].Visible = false;
 			dataView.Columns["manufacturer_id"].Visible = false;
 			dataView.Columns["Средняя цена"].DefaultCellStyle.Format = "c";
+
+			foreach (Control item in searchReviewOrOfferElements)
+			{
+				item.Visible = false;
+			}
+			foreach (Control item in searchDiskElements)
+			{
+				item.Visible = true;
+			}
 		}
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -240,6 +332,117 @@ namespace KursOragnisation
 			catch (Exception exc)
 			{
 				MessageBox.Show("Error: " + exc.Message);
+			}
+		}
+
+		private void TrunkButton_Click(object sender, EventArgs e)
+		{
+			DialogResult result = MessageBox.Show(
+				"Для обеспечения ссылочной целостности, очистка таблицы приведет удалению всех значений, которые ссылаются на эту таблицу",
+				"Вы уверены?",
+				MessageBoxButtons.YesNo);
+
+			if (result == DialogResult.Yes)
+			{
+				SqlCommand trunkate = new SqlCommand("EXECUTE dbo.trunk" + currentTable.ToString(), connection);
+
+				try
+				{
+					trunkate.ExecuteNonQuery();
+					UpdateView();
+				}
+				catch (Exception exc)
+				{
+					MessageBox.Show("Error: " + exc.Message);
+				}
+			}
+			else return;
+		}
+
+		private void FindButton_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				int disk_id = 0;
+				switch (currentTable)
+				{
+					case TableEnum.Disk:
+						SqlCommand getFilteredDisk = new SqlCommand();
+						getFilteredDisk.Connection = connection;
+						switch (paramsForFindingCombo.Text)
+						{
+							case "Средняя цена выше, чем:":
+								getFilteredDisk.CommandText = "SELECT id, type_id, manufacturer_id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name) as 'Носитель информации', (SELECT t.type FROM Disk_type t WHERE d.type_id = t.id) as 'Тип устройства', 'Обьем' = CASE WHEN copacity >= 1000 THEN CONVERT(varchar(10), ROUND(CONVERT(float, copacity / 1000), 1)) + ' TB' WHEN copacity >= 1 and copacity <= 1000 THEN CONVERT(varchar(10), copacity) + ' GB' END, reading_speed as 'Скорость чтения', writing_speed as 'Скорость записи', rating as 'Рейтинг', price as 'Средняя цена' FROM Disk d WHERE price > @price";
+								getFilteredDisk.Parameters.AddWithValue("@price", Convert.ToInt32(findingValueText.Text));
+								break;
+							case "Средняя цена ниже, чем:":
+								getFilteredDisk.CommandText = "SELECT id, type_id, manufacturer_id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name) as 'Носитель информации', (SELECT t.type FROM Disk_type t WHERE d.type_id = t.id) as 'Тип устройства', 'Обьем' = CASE WHEN copacity >= 1000 THEN CONVERT(varchar(10), ROUND(CONVERT(float, copacity / 1000), 1)) + ' TB' WHEN copacity >= 1 and copacity <= 1000 THEN CONVERT(varchar(10), copacity) + ' GB' END, reading_speed as 'Скорость чтения', writing_speed as 'Скорость записи', rating as 'Рейтинг', price as 'Средняя цена' FROM Disk d WHERE price < @price";
+								getFilteredDisk.Parameters.AddWithValue("@price", Convert.ToInt32(findingValueText.Text));
+								break;
+							case "Рейтинг выше, чем:":
+								getFilteredDisk.CommandText = "SELECT id, type_id, manufacturer_id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name) as 'Носитель информации', (SELECT t.type FROM Disk_type t WHERE d.type_id = t.id) as 'Тип устройства', 'Обьем' = CASE WHEN copacity >= 1000 THEN CONVERT(varchar(10), ROUND(CONVERT(float, copacity / 1000), 1)) + ' TB' WHEN copacity >= 1 and copacity <= 1000 THEN CONVERT(varchar(10), copacity) + ' GB' END, reading_speed as 'Скорость чтения', writing_speed as 'Скорость записи', rating as 'Рейтинг', price as 'Средняя цена' FROM Disk d WHERE rating > @rating";
+								getFilteredDisk.Parameters.AddWithValue("@rating", Convert.ToDouble(findingValueText.Text));
+								break;
+							case "Рейтинг ниже, чем:":
+								getFilteredDisk.CommandText = "SELECT id, type_id, manufacturer_id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name) as 'Носитель информации', (SELECT t.type FROM Disk_type t WHERE d.type_id = t.id) as 'Тип устройства', 'Обьем' = CASE WHEN copacity >= 1000 THEN CONVERT(varchar(10), ROUND(CONVERT(float, copacity / 1000), 1)) + ' TB' WHEN copacity >= 1 and copacity <= 1000 THEN CONVERT(varchar(10), copacity) + ' GB' END, reading_speed as 'Скорость чтения', writing_speed as 'Скорость записи', rating as 'Рейтинг', price as 'Средняя цена' FROM Disk d WHERE rating < @rating";
+								getFilteredDisk.Parameters.AddWithValue("@rating", Convert.ToDouble(findingValueText.Text));
+								break;
+							default:
+								break;
+						}
+
+						ExecSelect(getFilteredDisk);
+
+						dataView.Columns["id"].Visible = false;
+						dataView.Columns["type_id"].Visible = false;
+						dataView.Columns["manufacturer_id"].Visible = false;
+						dataView.Columns["Средняя цена"].DefaultCellStyle.Format = "c";
+						break;
+
+					case TableEnum.Review:
+						foreach (DataRow disk in disksWithId.Rows)
+						{
+							if (disk["disk"].ToString() == disksCombo.Text)
+							{
+								disk_id = Convert.ToInt32(disk["id"]);
+							}
+						}
+
+						SqlCommand getFilteredReviews = new SqlCommand("SELECT id, disk_id, (SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', d.copacity) FROM Disk d WHERE d.id = r.disk_id) as 'Носитель информации', rating as 'Оценка', comment as 'Коментарий' FROM Review r WHERE disk_id = @disk_id", connection);
+						getFilteredReviews.Parameters.AddWithValue("@disk_id", disk_id);
+
+						ExecSelect(getFilteredReviews);
+
+						dataView.Columns["id"].Visible = false;
+						dataView.Columns["disk_id"].Visible = false;
+						break;
+
+					case TableEnum.Offer:
+						foreach (DataRow disk in disksWithId.Rows)
+						{
+							if (disk["disk"].ToString() == disksCombo.Text)
+							{
+								disk_id = Convert.ToInt32(disk["id"]);
+							}
+						}
+
+						SqlCommand getFilteredOffers = new SqlCommand("SELECT id, disk_id, (SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', d.copacity) FROM Disk d WHERE d.id = o.disk_id) as 'Носитель информации', shop as 'Магазин', price as 'Цена', url as 'Ссылка' FROM Offer o WHERE disk_id = @disk_id", connection);
+						getFilteredOffers.Parameters.AddWithValue("@disk_id", disk_id);
+
+						ExecSelect(getFilteredOffers);
+
+						dataView.Columns["id"].Visible = false;
+						dataView.Columns["disk_id"].Visible = false;
+						dataView.Columns["Цена"].DefaultCellStyle.Format = "c";
+						break;
+
+					default:
+						break;
+				}
+			}
+			catch (Exception)
+			{
+				MessageBox.Show("Неверно введены данные");
 			}
 		}
 	}

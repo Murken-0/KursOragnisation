@@ -34,7 +34,7 @@
 			this.addButton = new System.Windows.Forms.Button();
 			this.updateButton = new System.Windows.Forms.Button();
 			this.deleteButton = new System.Windows.Forms.Button();
-			this.button4 = new System.Windows.Forms.Button();
+			this.trunkButton = new System.Windows.Forms.Button();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.diskTool = new System.Windows.Forms.ToolStripMenuItem();
 			this.reviewTool = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,6 +42,10 @@
 			this.manufacturerTool = new System.Windows.Forms.ToolStripMenuItem();
 			this.typeTool = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+			this.findButton = new System.Windows.Forms.Button();
+			this.findingValueText = new System.Windows.Forms.TextBox();
+			this.paramsForFindingCombo = new System.Windows.Forms.ComboBox();
+			this.disksCombo = new System.Windows.Forms.ComboBox();
 			((System.ComponentModel.ISupportInitialize)(this.dataView)).BeginInit();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -107,14 +111,15 @@
 			this.deleteButton.UseVisualStyleBackColor = true;
 			this.deleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
 			// 
-			// button4
+			// trunkButton
 			// 
-			this.button4.Location = new System.Drawing.Point(609, 30);
-			this.button4.Name = "button4";
-			this.button4.Size = new System.Drawing.Size(179, 34);
-			this.button4.TabIndex = 6;
-			this.button4.Text = "button4";
-			this.button4.UseVisualStyleBackColor = true;
+			this.trunkButton.Location = new System.Drawing.Point(609, 30);
+			this.trunkButton.Name = "trunkButton";
+			this.trunkButton.Size = new System.Drawing.Size(179, 34);
+			this.trunkButton.TabIndex = 6;
+			this.trunkButton.Text = "Очистить таблицу";
+			this.trunkButton.UseVisualStyleBackColor = true;
+			this.trunkButton.Click += new System.EventHandler(this.TrunkButton_Click);
 			// 
 			// toolStripMenuItem1
 			// 
@@ -173,12 +178,52 @@
 			this.menuStrip1.TabIndex = 1;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
+			// findButton
+			// 
+			this.findButton.Location = new System.Drawing.Point(713, 444);
+			this.findButton.Name = "findButton";
+			this.findButton.Size = new System.Drawing.Size(75, 23);
+			this.findButton.TabIndex = 7;
+			this.findButton.Text = "Найти";
+			this.findButton.UseVisualStyleBackColor = true;
+			this.findButton.Click += new System.EventHandler(this.FindButton_Click);
+			// 
+			// findingValueText
+			// 
+			this.findingValueText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.findingValueText.Location = new System.Drawing.Point(576, 445);
+			this.findingValueText.Name = "findingValueText";
+			this.findingValueText.Size = new System.Drawing.Size(133, 21);
+			this.findingValueText.TabIndex = 8;
+			// 
+			// paramsForFindingCombo
+			// 
+			this.paramsForFindingCombo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.paramsForFindingCombo.FormattingEnabled = true;
+			this.paramsForFindingCombo.Location = new System.Drawing.Point(410, 445);
+			this.paramsForFindingCombo.Name = "paramsForFindingCombo";
+			this.paramsForFindingCombo.Size = new System.Drawing.Size(159, 21);
+			this.paramsForFindingCombo.TabIndex = 9;
+			this.paramsForFindingCombo.Text = "Параметры для поиска";
+			// 
+			// disksCombo
+			// 
+			this.disksCombo.FormattingEnabled = true;
+			this.disksCombo.Location = new System.Drawing.Point(575, 445);
+			this.disksCombo.Name = "disksCombo";
+			this.disksCombo.Size = new System.Drawing.Size(134, 21);
+			this.disksCombo.TabIndex = 10;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(800, 450);
-			this.Controls.Add(this.button4);
+			this.ClientSize = new System.Drawing.Size(800, 473);
+			this.Controls.Add(this.disksCombo);
+			this.Controls.Add(this.paramsForFindingCombo);
+			this.Controls.Add(this.findingValueText);
+			this.Controls.Add(this.findButton);
+			this.Controls.Add(this.trunkButton);
 			this.Controls.Add(this.deleteButton);
 			this.Controls.Add(this.updateButton);
 			this.Controls.Add(this.addButton);
@@ -186,10 +231,8 @@
 			this.Controls.Add(this.menuStrip1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MainMenuStrip = this.menuStrip1;
-			this.MaximumSize = new System.Drawing.Size(816, 489);
-			this.MinimumSize = new System.Drawing.Size(816, 489);
 			this.Name = "MainForm";
-			this.Text = "отк";
+			this.Text = "Муравьев БСБО-01-20";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			((System.ComponentModel.ISupportInitialize)(this.dataView)).EndInit();
@@ -205,7 +248,7 @@
 		private System.Windows.Forms.Button addButton;
 		private System.Windows.Forms.Button updateButton;
 		private System.Windows.Forms.Button deleteButton;
-		private System.Windows.Forms.Button button4;
+		private System.Windows.Forms.Button trunkButton;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem diskTool;
 		private System.Windows.Forms.ToolStripMenuItem reviewTool;
@@ -213,5 +256,9 @@
 		private System.Windows.Forms.ToolStripMenuItem manufacturerTool;
 		private System.Windows.Forms.ToolStripMenuItem typeTool;
 		private System.Windows.Forms.MenuStrip menuStrip1;
+		private System.Windows.Forms.Button findButton;
+		private System.Windows.Forms.TextBox findingValueText;
+		private System.Windows.Forms.ComboBox paramsForFindingCombo;
+		private System.Windows.Forms.ComboBox disksCombo;
 	}
 }

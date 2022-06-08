@@ -40,7 +40,7 @@ namespace KursOragnisation
 
 		private void AddDiskForm_Load(object sender, EventArgs e)
 		{
-			if (isUpdating)
+			if (isUpdating == true)
 			{
 				DataTable disk = new DataTable();
 				SqlCommand getRow = new SqlCommand("SELECT (SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id) as 'man', name, copacity, (SELECT t.type FROM Disk_type t WHERE d.type_id = t.id) as 'type', reading_speed as 'rs', writing_speed as 'ws'FROM Disk d WHERE id = @id", connection);

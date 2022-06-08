@@ -117,7 +117,7 @@
 			this.button.TabIndex = 21;
 			this.button.Text = "Добавить";
 			this.button.UseVisualStyleBackColor = true;
-			this.button.Click += new System.EventHandler(this.AddButton_Click);
+			this.button.Click += new System.EventHandler(this.Button_Click);
 			// 
 			// ManufacturerForm
 			// 

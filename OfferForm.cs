@@ -53,8 +53,8 @@ namespace KursOragnisation
 			}
 
 			disks.Clear();
-			SqlCommand getTypes = new SqlCommand("SELECT id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', copacity) as 'disk' FROM Disk d", connection);
-			adapter.SelectCommand = getTypes;
+			SqlCommand getDisks = new SqlCommand("SELECT id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', copacity) as 'disk' FROM Disk d", connection);
+			adapter.SelectCommand = getDisks;
 			adapter.Fill(disks);
 
 			foreach (DataRow disk in disks.Rows)

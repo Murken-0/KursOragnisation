@@ -37,18 +37,21 @@ namespace KursOragnisation
 
 		private void ManufacturerForm_Load(object sender, EventArgs e)
 		{
-			SqlCommand getRow = new SqlCommand("SELECT name, founding_date, country, founder FROM Manufacturer WHERE id = @id", connection);
-			getRow.Parameters.AddWithValue("@id", updatingId);
-			adapter.SelectCommand = getRow;
-			adapter.Fill(rows);
-			updatingRow = rows.Rows[0];
+			if (isUpdating == true)
+			{
+				SqlCommand getRow = new SqlCommand("SELECT name, founding_date, country, founder FROM Manufacturer WHERE id = @id", connection);
+				getRow.Parameters.AddWithValue("@id", updatingId);
+				adapter.SelectCommand = getRow;
+				adapter.Fill(rows);
+				updatingRow = rows.Rows[0];
 
-			nameText.Text = updatingRow["name"].ToString();
-			countryText.Text = updatingRow["country"].ToString();
-			founderText.Text = updatingRow["founder"].ToString();
-			datePicker.Value = Convert.ToDateTime(updatingRow["founding_date"]);
+				nameText.Text = updatingRow["name"].ToString();
+				countryText.Text = updatingRow["country"].ToString();
+				founderText.Text = updatingRow["founder"].ToString();
+				datePicker.Value = Convert.ToDateTime(updatingRow["founding_date"]);
+			}
 		}
-		private void AddButton_Click(object sender, EventArgs e)
+		private void Button_Click(object sender, EventArgs e)
 		{
 			try
 			{

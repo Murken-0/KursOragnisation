@@ -36,13 +36,16 @@ namespace KursOragnisation
 		}
 		private void TypeForm_Load(object sender, EventArgs e)
 		{
-			SqlCommand getRow = new SqlCommand("SELECT type FROM Disk_type WHERE id = @id ", connection);
-			getRow.Parameters.AddWithValue("@id", updatingId);
-			adapter.SelectCommand = getRow;
-			adapter.Fill(rows);
-			updatingRow = rows.Rows[0];
+			if (isUpdating == true)
+			{
+				SqlCommand getRow = new SqlCommand("SELECT type FROM Disk_type WHERE id = @id ", connection);
+				getRow.Parameters.AddWithValue("@id", updatingId);
+				adapter.SelectCommand = getRow;
+				adapter.Fill(rows);
+				updatingRow = rows.Rows[0];
 
-			typeText.Text = updatingRow["type"].ToString();
+				typeText.Text = updatingRow["type"].ToString();
+			}
 		}
 
 		private void Button_Click(object sender, EventArgs e)
