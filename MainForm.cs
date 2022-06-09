@@ -3,50 +3,119 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Data;
+using System.Drawing;
 
 namespace KursOragnisation
 {
 	public partial class MainForm : Form
 	{
 		LoginForm loginForm;
-
 		SqlConnection connection;
 		SqlDataAdapter adapter = new SqlDataAdapter();
 
-		TableEnum currentTable;
+		TableEnum CurrentTable
+		{
+			get { return _currentTable; }
+			set { _currentTable = value; CurrentTableChanged(); }
+		}
+		TableEnum _currentTable;
+
 		DataTable currentData = new DataTable();
 		SqlCommand lastSelect;
-
 		List<Control> searchDiskElements;
-
 		List<Control> searchReviewOrOfferElements;
+		List<Control> buttons;
 		DataTable disksWithId = new DataTable();
 
-
-
-		public MainForm()
+		public MainForm(LoginForm loginForm, SqlConnection connection)
 		{
 			InitializeComponent();
-			connection = new SqlConnection(@"Data Source=VLAD-PC\SQLEXPRESS;Initial Catalog=kursa4;User ID=Admin;Password=root");
+
+			this.loginForm = loginForm;
+			this.connection = connection;
+
 			connection.Open();
+
 			dataView.DataSource = currentData;
+
 			searchDiskElements = new List<Control>() { paramsForFindingCombo, findingValueText, findButton };
 			searchReviewOrOfferElements = new List<Control>() { disksCombo, findButton };
-			string[] items = { "Средняя цена выше, чем:", "Средняя цена ниже, чем:", "Рейтинг выше, чем:", "Рейтинг ниже, чем:" };
-			paramsForFindingCombo.Items.AddRange(items);
+			buttons = new List<Control>() { addButton, deleteButton, updateButton, trunkButton };
 		}
 
-		public MainForm(LoginForm f, SqlConnection connection)
+		private void MainForm_Load(object sender, EventArgs e)
 		{
-			InitializeComponent();
-			loginForm = f;
-			this.connection = connection;
-			connection.Open();
-			dataView.DataSource = currentData;
-			searchDiskElements = new List<Control>() { paramsForFindingCombo, findingValueText, findButton };
-			searchReviewOrOfferElements = new List<Control>() { disksCombo, findButton };
-			string[] items = { "Средняя цена выше, чем:", "Средняя цена ниже, чем:", "Рейтинг выше, чем:", "Рейтинг ниже, чем:" };
-			paramsForFindingCombo.Items.AddRange(items);
+			SqlCommand disks = new SqlCommand(@"SELECT id, type_id, manufacturer_id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name) as 'Носитель информации', (SELECT t.type FROM Disk_type t WHERE d.type_id = t.id) as 'Тип устройства', 'Обьем' = CASE WHEN copacity >= 1000 THEN CONVERT(varchar(10), ROUND(CONVERT(float, copacity / 1000), 1)) + ' TB' WHEN copacity >= 1 and copacity <= 1000 THEN CONVERT(varchar(10), copacity) + ' GB' END, reading_speed as 'Скорость чтения', writing_speed as 'Скорость записи', rating as 'Рейтинг', price as 'Средняя цена' FROM Disk d ORDER BY 'Носитель информации'", connection);
+			CurrentTable = TableEnum.Disk;
+			ExecSelect(disks);
+
+			dataView.Columns["id"].Visible = false;
+			dataView.Columns["type_id"].Visible = false;
+			dataView.Columns["manufacturer_id"].Visible = false;
+			dataView.Columns["Средняя цена"].DefaultCellStyle.Format = "c";
+
+			foreach (Control item in searchReviewOrOfferElements)
+			{
+				item.Visible = false;
+			}
+			foreach (Control item in searchDiskElements)
+			{
+				item.Visible = true;
+			}
+		}
+
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			connection.Close();
+			loginForm.Show();
+		}
+
+		private void CurrentTableChanged()
+		{
+			if (CurrentTable == TableEnum.Disk)
+			{
+				Height = 512;
+
+				foreach (Control item in searchReviewOrOfferElements)
+					item.Visible = false;
+
+				foreach (Control item in searchDiskElements)
+					item.Visible = true;
+			}
+			else if (CurrentTable == TableEnum.Review || CurrentTable == TableEnum.Offer)
+			{
+				Height = 512;
+
+				disksCombo.Items.Clear();
+				foreach (DataRow disk in disksWithId.Rows)
+					disksCombo.Items.Add(disk["disk"]);
+
+				foreach (Control item in searchDiskElements)
+					item.Visible = false;
+
+				foreach (Control item in searchReviewOrOfferElements)
+					item.Visible = true;
+			}
+			else
+			{
+				Height = 486;
+				foreach (Control item in searchDiskElements)
+					item.Visible = false;
+
+				foreach (Control item in searchReviewOrOfferElements)
+					item.Visible = false;
+			}
+
+			if (CurrentTable == TableEnum.OtherSelection)
+			{
+				foreach (Control item in buttons)
+					item.BackColor = Color.LightGray;
+			}
+			else
+			{
+				foreach (Control item in buttons)
+					item.BackColor = Control.DefaultBackColor;
+			}
 		}
 
 		public void UpdateView()
@@ -88,30 +157,24 @@ namespace KursOragnisation
 			}
 		}
 
+
+		//Вывод таблиц
 		private void DiskTool_Click(object sender, EventArgs e)
 		{
-			SqlCommand disks = new SqlCommand(@"SELECT id, type_id, manufacturer_id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name) as 'Носитель информации', (SELECT t.type FROM Disk_type t WHERE d.type_id = t.id) as 'Тип устройства', 'Обьем' = CASE WHEN copacity >= 1000 THEN CONVERT(varchar(10), ROUND(CONVERT(float, copacity / 1000), 1)) + ' TB' WHEN copacity >= 1 and copacity <= 1000 THEN CONVERT(varchar(10), copacity) + ' GB' END, reading_speed as 'Скорость чтения', writing_speed as 'Скорость записи', rating as 'Рейтинг', price as 'Средняя цена' FROM Disk d", connection);
-			currentTable = TableEnum.Disk;
+			SqlCommand disks = new SqlCommand(@"SELECT id, type_id, manufacturer_id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name) as 'Носитель информации', (SELECT t.type FROM Disk_type t WHERE d.type_id = t.id) as 'Тип устройства', 'Обьем' = CASE WHEN copacity >= 1000 THEN CONVERT(varchar(10), ROUND(CONVERT(float, copacity / 1000), 1)) + ' TB' WHEN copacity >= 1 and copacity <= 1000 THEN CONVERT(varchar(10), copacity) + ' GB' END, reading_speed as 'Скорость чтения', writing_speed as 'Скорость записи', rating as 'Рейтинг', price as 'Средняя цена' FROM Disk d ORDER BY 'Носитель информации'", connection);
+			CurrentTable = TableEnum.Disk;
 			ExecSelect(disks);
 
 			dataView.Columns["id"].Visible = false;
 			dataView.Columns["type_id"].Visible = false;
 			dataView.Columns["manufacturer_id"].Visible = false;
 			dataView.Columns["Средняя цена"].DefaultCellStyle.Format = "c";
-
-			foreach (Control item in searchReviewOrOfferElements)
-			{
-				item.Visible = false;
-			}
-			foreach (Control item in searchDiskElements)
-			{
-				item.Visible = true;
-			}
 		}
+
 		private void ReviewTool_Click(object sender, EventArgs e)
 		{
-			SqlCommand reviews = new SqlCommand("SELECT id, disk_id, (SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', d.copacity) FROM Disk d WHERE d.id = r.disk_id) as 'Носитель информации', rating as 'Оценка', comment as 'Коментарий' FROM Review r", connection);
-			currentTable = TableEnum.Review;
+			SqlCommand reviews = new SqlCommand("SELECT id, disk_id, (SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', d.copacity) FROM Disk d WHERE d.id = r.disk_id) as 'Носитель информации', rating as 'Оценка', comment as 'Коментарий', date as 'Дата' FROM Review r ORDER BY 'Носитель информации'", connection);
+			CurrentTable = TableEnum.Review;
 			ExecSelect(reviews);
 
 			dataView.Columns["id"].Visible = false;
@@ -121,26 +184,12 @@ namespace KursOragnisation
 			SqlCommand getDisks = new SqlCommand("SELECT id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', copacity) as 'disk' FROM Disk d", connection);
 			adapter.SelectCommand = getDisks;
 			adapter.Fill(disksWithId);
-
-			disksCombo.Items.Clear();
-			foreach (DataRow disk in disksWithId.Rows)
-			{
-				disksCombo.Items.Add(disk["disk"]);
-			}
-
-			foreach (Control item in searchDiskElements)
-			{
-				item.Visible = false;
-			}
-			foreach (Control item in searchReviewOrOfferElements)
-			{
-				item.Visible = true;
-			}
 		}
+
 		private void OfferTool_Click(object sender, EventArgs e)
 		{
-			SqlCommand offers = new SqlCommand("SELECT id, disk_id, (SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', d.copacity) FROM Disk d WHERE d.id = o.disk_id) as 'Носитель информации', shop as 'Магазин', price as 'Цена', url as 'Ссылка' FROM Offer o", connection);
-			currentTable = TableEnum.Offer;
+			SqlCommand offers = new SqlCommand("SELECT id, disk_id, (SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', d.copacity) FROM Disk d WHERE d.id = o.disk_id) as 'Носитель информации', shop as 'Магазин', price as 'Цена', url as 'Ссылка' FROM Offer o ORDER BY 'Носитель информации'", connection);
+			CurrentTable = TableEnum.Offer;
 			ExecSelect(offers);
 
 			dataView.Columns["id"].Visible = false;
@@ -151,26 +200,12 @@ namespace KursOragnisation
 			SqlCommand getDisks = new SqlCommand("SELECT id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', copacity) as 'disk' FROM Disk d", connection);
 			adapter.SelectCommand = getDisks;
 			adapter.Fill(disksWithId);
-
-			disksCombo.Items.Clear();
-			foreach (DataRow disk in disksWithId.Rows)
-			{
-				disksCombo.Items.Add(disk["disk"]);
-			}
-
-			foreach (Control item in searchDiskElements)
-			{
-				item.Visible = false;
-			}
-			foreach (Control item in searchReviewOrOfferElements)
-			{
-				item.Visible = true;
-			}
 		}
+
 		private void ManufacturerTool_Click(object sender, EventArgs e)
 		{
 			SqlCommand manufs = new SqlCommand("SELECT id, name as 'Название', founding_date as 'Дата создания', country as 'Страна', founder as 'Основатели' FROM Manufacturer", connection);
-			currentTable = TableEnum.Manufacturer;
+			CurrentTable = TableEnum.Manufacturer;
 			ExecSelect(manufs);
 
 			dataView.Columns["id"].Visible = false;
@@ -184,10 +219,11 @@ namespace KursOragnisation
 				item.Visible = false;
 			}
 		}
+
 		private void TypeTool_Click(object sender, EventArgs e)
 		{
 			SqlCommand diskType = new SqlCommand("SELECT id, type as 'Тип' FROM Disk_type", connection);
-			currentTable = TableEnum.DiskType;
+			CurrentTable = TableEnum.DiskType;
 			ExecSelect(diskType);
 
 			dataView.Columns["id"].Visible = false;
@@ -201,38 +237,14 @@ namespace KursOragnisation
 				item.Visible = false;
 			}
 		}
-		private void MainForm_Load(object sender, EventArgs e)
-		{
-			SqlCommand disks = new SqlCommand(@"SELECT id, type_id, manufacturer_id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name) as 'Носитель информации', (SELECT t.type FROM Disk_type t WHERE d.type_id = t.id) as 'Тип устройства', 'Обьем' = CASE WHEN copacity >= 1000 THEN CONVERT(varchar(10), ROUND(CONVERT(float, copacity / 1000), 1)) + ' TB' WHEN copacity >= 1 and copacity <= 1000 THEN CONVERT(varchar(10), copacity) + ' GB' END, reading_speed as 'Скорость чтения', writing_speed as 'Скорость записи', rating as 'Рейтинг', price as 'Средняя цена' FROM Disk d", connection);
-			currentTable = TableEnum.Disk;
-			ExecSelect(disks);
 
-			dataView.Columns["id"].Visible = false;
-			dataView.Columns["type_id"].Visible = false;
-			dataView.Columns["manufacturer_id"].Visible = false;
-			dataView.Columns["Средняя цена"].DefaultCellStyle.Format = "c";
 
-			foreach (Control item in searchReviewOrOfferElements)
-			{
-				item.Visible = false;
-			}
-			foreach (Control item in searchDiskElements)
-			{
-				item.Visible = true;
-			}
-		}
-
-		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			connection.Close();
-			//loginForm.Show();
-		}
-
+		//Кнопки
 		private void AddButton_Click(object sender, EventArgs e)
 		{
 			connection.Close();
 
-			switch (currentTable)
+			switch (CurrentTable)
 			{
 				case TableEnum.Disk:
 					DiskForm addDisk = new DiskForm(this, connection);
@@ -261,6 +273,7 @@ namespace KursOragnisation
 					throw new ArgumentException("В свич пришла какая-то фигня");
 			}
 		}
+
 		private void UpdateButton_Click(object sender, EventArgs e)
 		{
 			connection.Close();
@@ -270,7 +283,7 @@ namespace KursOragnisation
 				MessageBox.Show("Для удаления необходимо выбрать только одну строку");
 				return;
 			}
-			if (currentTable == TableEnum.OtherSelection)
+			if (CurrentTable == TableEnum.OtherSelection)
 			{
 				MessageBox.Show("Нельзя удалить данные из выборки");
 				return;
@@ -278,27 +291,27 @@ namespace KursOragnisation
 
 			int id = Convert.ToInt32(currentData.Rows[dataView.SelectedRows[0].Index]["id"]);
 
-			switch (currentTable)
+			switch (CurrentTable)
 			{
 				case TableEnum.Disk:
-					DiskForm addDisk = new DiskForm(this, connection, id);
-					addDisk.Show();
+					DiskForm updateDisk = new DiskForm(this, connection, id);
+					updateDisk.Show();
 					break;
 				case TableEnum.Review:
-					ReviewForm addReview = new ReviewForm(this, connection, id);
-					addReview.Show();
+					ReviewForm updateReview = new ReviewForm(this, connection, id);
+					updateReview.Show();
 					break;
 				case TableEnum.Offer:
-					OfferForm addOffer = new OfferForm(this, connection, id);
-					addOffer.Show();
+					OfferForm updateOffer = new OfferForm(this, connection, id);
+					updateOffer.Show();
 					break;
 				case TableEnum.DiskType:
-					TypeForm addType = new TypeForm(this, connection, id);
-					addType.Show();
+					TypeForm updateType = new TypeForm(this, connection, id);
+					updateType.Show();
 					break;
 				case TableEnum.Manufacturer:
-					ManufacturerForm addManufacturer = new ManufacturerForm(this, connection, id);
-					addManufacturer.Show();
+					ManufacturerForm updateManufacturer = new ManufacturerForm(this, connection, id);
+					updateManufacturer.Show();
 					break;
 				case TableEnum.OtherSelection:
 					MessageBox.Show("Нельзя редактировать выборку");
@@ -309,19 +322,19 @@ namespace KursOragnisation
 		}
 		private void DeleteButton_Click(object sender, EventArgs e)
 		{
+			if (CurrentTable == TableEnum.OtherSelection)
+			{
+				MessageBox.Show("Нельзя удалить данные из выборки");
+				return;
+			}
 			if (dataView.SelectedRows.Count != 1)
 			{
 				MessageBox.Show("Для удаления необходимо выбрать только одну строку");
 				return;
 			}
-			if (currentTable == TableEnum.OtherSelection)
-			{
-				MessageBox.Show("Нельзя удалить данные из выборки");
-				return;
-			}
 
 			int selectedRowId = Convert.ToInt32(currentData.Rows[dataView.SelectedRows[0].Index]["id"]);
-			SqlCommand delete = new SqlCommand("EXECUTE dbo.delete" + currentTable.ToString() + " @id", connection);
+			SqlCommand delete = new SqlCommand("EXECUTE dbo.delete" + CurrentTable.ToString() + " @id", connection);
 			delete.Parameters.AddWithValue("@id", selectedRowId);
 
 			try
@@ -337,6 +350,12 @@ namespace KursOragnisation
 
 		private void TrunkButton_Click(object sender, EventArgs e)
 		{
+			if (CurrentTable == TableEnum.OtherSelection)
+			{
+				MessageBox.Show("Нельзя удалить данные из выборки");
+				return;
+			}
+
 			DialogResult result = MessageBox.Show(
 				"Для обеспечения ссылочной целостности, очистка таблицы приведет удалению всех значений, которые ссылаются на эту таблицу",
 				"Вы уверены?",
@@ -344,7 +363,7 @@ namespace KursOragnisation
 
 			if (result == DialogResult.Yes)
 			{
-				SqlCommand trunkate = new SqlCommand("EXECUTE dbo.trunk" + currentTable.ToString(), connection);
+				SqlCommand trunkate = new SqlCommand("EXECUTE dbo.trunk" + CurrentTable.ToString(), connection);
 
 				try
 				{
@@ -364,11 +383,10 @@ namespace KursOragnisation
 			try
 			{
 				int disk_id = 0;
-				switch (currentTable)
+				switch (CurrentTable)
 				{
 					case TableEnum.Disk:
-						SqlCommand getFilteredDisk = new SqlCommand();
-						getFilteredDisk.Connection = connection;
+						SqlCommand getFilteredDisk = new SqlCommand {Connection = connection};
 						switch (paramsForFindingCombo.Text)
 						{
 							case "Средняя цена выше, чем:":
@@ -443,6 +461,72 @@ namespace KursOragnisation
 			catch (Exception)
 			{
 				MessageBox.Show("Неверно введены данные");
+			}
+		}
+
+
+		//Выборки
+		private void ReviewCountToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			CurrentTable = TableEnum.OtherSelection;
+			SqlCommand sqlCommand = new SqlCommand("SELECT CONCAT(d.name, ' ', d.copacity) as 'Носитель информации', COUNT(rev.id) as 'Количество отзывов' FROM Review rev INNER JOIN Disk d ON rev.disk_id = d.id GROUP BY CONCAT(d.name, ' ', d.copacity) HAVING COUNT(rev.id) > 2", connection);
+			ExecSelect(sqlCommand);
+
+			foreach (Control item in searchReviewOrOfferElements)
+			{
+				item.Visible = false;
+			}
+			foreach (Control item in searchDiskElements)
+			{
+				item.Visible = false;
+			}
+		}
+
+		private void AvgratingAfter2019ToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			CurrentTable = TableEnum.OtherSelection;
+			SqlCommand sqlCommand = new SqlCommand("SELECT AVG(CAST(rating AS float)) AS AVG_rating FROM (SELECT rating FROM Review WHERE date >= CAST('2020-01-01' AS Date)) AS tempRates", connection);
+			ExecSelect(sqlCommand);
+
+			foreach (Control item in searchReviewOrOfferElements)
+			{
+				item.Visible = false;
+			}
+			foreach (Control item in searchDiskElements)
+			{
+				item.Visible = false;
+			}
+		}
+
+		private void AllSSDToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			CurrentTable = TableEnum.OtherSelection;
+			SqlCommand sqlCommand = new SqlCommand("SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name) as 'Носитель информации' FROM Disk d WHERE type_id = ANY(SELECT id FROM Disk_type WHERE type = 'SSD' or 'SSD M.2')", connection);
+			ExecSelect(sqlCommand);
+
+			foreach (Control item in searchReviewOrOfferElements)
+			{
+				item.Visible = false;
+			}
+			foreach (Control item in searchDiskElements)
+			{
+				item.Visible = false;
+			}
+		}
+
+		private void ViewToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			CurrentTable = TableEnum.OtherSelection;
+			SqlCommand sqlCommand = new SqlCommand("SELECT * FROM DisksInfo", connection);
+			ExecSelect(sqlCommand);
+
+			foreach (Control item in searchReviewOrOfferElements)
+			{
+				item.Visible = false;
+			}
+			foreach (Control item in searchDiskElements)
+			{
+				item.Visible = false;
 			}
 		}
 	}

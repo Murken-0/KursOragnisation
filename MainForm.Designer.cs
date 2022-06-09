@@ -28,8 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.dataView = new System.Windows.Forms.DataGridView();
 			this.addButton = new System.Windows.Forms.Button();
 			this.updateButton = new System.Windows.Forms.Button();
@@ -42,6 +42,11 @@
 			this.manufacturerTool = new System.Windows.Forms.ToolStripMenuItem();
 			this.typeTool = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+			this.выборкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.reviewCountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.avgratingAfter2019ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.поздапросВWHEREToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.выводVIEWToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.findButton = new System.Windows.Forms.Button();
 			this.findingValueText = new System.Windows.Forms.TextBox();
 			this.paramsForFindingCombo = new System.Windows.Forms.ComboBox();
@@ -58,26 +63,26 @@
 			this.dataView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
 			this.dataView.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dataView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.MistyRose;
-			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dataView.DefaultCellStyle = dataGridViewCellStyle1;
+			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.MistyRose;
+			dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dataView.DefaultCellStyle = dataGridViewCellStyle7;
 			this.dataView.Location = new System.Drawing.Point(13, 70);
 			this.dataView.MultiSelect = false;
 			this.dataView.Name = "dataView";
 			this.dataView.ReadOnly = true;
-			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.PapayaWhip;
-			dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.dataView.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.PapayaWhip;
+			dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.dataView.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
 			this.dataView.Size = new System.Drawing.Size(775, 368);
 			this.dataView.TabIndex = 2;
 			// 
@@ -171,12 +176,52 @@
 			// menuStrip1
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.выборкиToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(800, 24);
 			this.menuStrip1.TabIndex = 1;
 			this.menuStrip1.Text = "menuStrip1";
+			// 
+			// выборкиToolStripMenuItem
+			// 
+			this.выборкиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.reviewCountToolStripMenuItem,
+            this.avgratingAfter2019ToolStripMenuItem,
+            this.поздапросВWHEREToolStripMenuItem,
+            this.выводVIEWToolStripMenuItem});
+			this.выборкиToolStripMenuItem.Name = "выборкиToolStripMenuItem";
+			this.выборкиToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
+			this.выборкиToolStripMenuItem.Text = "Выборки";
+			// 
+			// reviewCountToolStripMenuItem
+			// 
+			this.reviewCountToolStripMenuItem.Name = "reviewCountToolStripMenuItem";
+			this.reviewCountToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
+			this.reviewCountToolStripMenuItem.Text = "Группировка";
+			this.reviewCountToolStripMenuItem.Click += new System.EventHandler(this.ReviewCountToolStripMenuItem_Click);
+			// 
+			// avgratingAfter2019ToolStripMenuItem
+			// 
+			this.avgratingAfter2019ToolStripMenuItem.Name = "avgratingAfter2019ToolStripMenuItem";
+			this.avgratingAfter2019ToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
+			this.avgratingAfter2019ToolStripMenuItem.Text = "Подзапрос в FROM";
+			this.avgratingAfter2019ToolStripMenuItem.Click += new System.EventHandler(this.AvgratingAfter2019ToolStripMenuItem_Click);
+			// 
+			// поздапросВWHEREToolStripMenuItem
+			// 
+			this.поздапросВWHEREToolStripMenuItem.Name = "поздапросВWHEREToolStripMenuItem";
+			this.поздапросВWHEREToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
+			this.поздапросВWHEREToolStripMenuItem.Text = "Поздапрос в SELECT и WHERE + ANY";
+			this.поздапросВWHEREToolStripMenuItem.Click += new System.EventHandler(this.AllSSDToolStripMenuItem_Click);
+			// 
+			// выводVIEWToolStripMenuItem
+			// 
+			this.выводVIEWToolStripMenuItem.Name = "выводVIEWToolStripMenuItem";
+			this.выводVIEWToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
+			this.выводVIEWToolStripMenuItem.Text = "Вывод VIEW";
+			this.выводVIEWToolStripMenuItem.Click += new System.EventHandler(this.ViewToolStripMenuItem_Click);
 			// 
 			// findButton
 			// 
@@ -200,7 +245,12 @@
 			// 
 			this.paramsForFindingCombo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.paramsForFindingCombo.FormattingEnabled = true;
-			this.paramsForFindingCombo.Location = new System.Drawing.Point(410, 445);
+			this.paramsForFindingCombo.Items.AddRange(new object[] {
+            "Средняя цена выше, чем:",
+            "Средняя цена ниже, чем:",
+            "Рейтинг выше, чем:",
+            "Рейтинг ниже, чем:"});
+			this.paramsForFindingCombo.Location = new System.Drawing.Point(413, 445);
 			this.paramsForFindingCombo.Name = "paramsForFindingCombo";
 			this.paramsForFindingCombo.Size = new System.Drawing.Size(159, 21);
 			this.paramsForFindingCombo.TabIndex = 9;
@@ -209,10 +259,11 @@
 			// disksCombo
 			// 
 			this.disksCombo.FormattingEnabled = true;
-			this.disksCombo.Location = new System.Drawing.Point(575, 445);
+			this.disksCombo.Location = new System.Drawing.Point(576, 445);
 			this.disksCombo.Name = "disksCombo";
 			this.disksCombo.Size = new System.Drawing.Size(134, 21);
 			this.disksCombo.TabIndex = 10;
+			this.disksCombo.Text = "Диск";
 			// 
 			// MainForm
 			// 
@@ -232,7 +283,7 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "MainForm";
-			this.Text = "Муравьев БСБО-01-20";
+			this.Text = "Муравьев БСБО-01-20 Вариант 37";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			((System.ComponentModel.ISupportInitialize)(this.dataView)).EndInit();
@@ -260,5 +311,10 @@
 		private System.Windows.Forms.TextBox findingValueText;
 		private System.Windows.Forms.ComboBox paramsForFindingCombo;
 		private System.Windows.Forms.ComboBox disksCombo;
+		private System.Windows.Forms.ToolStripMenuItem выборкиToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem reviewCountToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem avgratingAfter2019ToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem поздапросВWHEREToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem выводVIEWToolStripMenuItem;
 	}
 }
