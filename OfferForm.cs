@@ -40,7 +40,7 @@ namespace KursOragnisation
 		{
 			if (isUpdating)
 			{
-				SqlCommand getRow = new SqlCommand("SELECT (SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', copacity) as 'disk' FROM Disk d) as disk, shop, url, price FROM Offer o WHERE id = @id", connection);
+				SqlCommand getRow = new SqlCommand("SELECT (SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', copacity) FROM Disk d WHERE o.disk_id = d.id) as disk, shop, url, price FROM Offer o WHERE id = @id", connection);
 				getRow.Parameters.AddWithValue("@id", updatingId);
 				adapter.SelectCommand = getRow;
 				adapter.Fill(disks);

@@ -181,7 +181,7 @@ namespace KursOragnisation
 			dataView.Columns["disk_id"].Visible = false;
 
 			disksWithId.Clear();
-			SqlCommand getDisks = new SqlCommand("SELECT id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', copacity) as 'disk' FROM Disk d", connection);
+			SqlCommand getDisks = new SqlCommand("SELECT id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', copacity) as 'disk' FROM Disk d WHERE rating IS NOT NULL", connection);
 			adapter.SelectCommand = getDisks;
 			adapter.Fill(disksWithId);
 		}
@@ -197,7 +197,7 @@ namespace KursOragnisation
 			dataView.Columns["Цена"].DefaultCellStyle.Format = "c";
 
 			disksWithId.Clear();
-			SqlCommand getDisks = new SqlCommand("SELECT id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', copacity) as 'disk' FROM Disk d", connection);
+			SqlCommand getDisks = new SqlCommand("SELECT id, CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name, ' ', copacity) as 'disk' FROM Disk d WHERE price IS NOT NULL", connection);
 			adapter.SelectCommand = getDisks;
 			adapter.Fill(disksWithId);
 		}
@@ -501,7 +501,7 @@ namespace KursOragnisation
 		private void AllSSDToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			CurrentTable = TableEnum.OtherSelection;
-			SqlCommand sqlCommand = new SqlCommand("SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name) as 'Носитель информации' FROM Disk d WHERE type_id = ANY(SELECT id FROM Disk_type WHERE type = 'SSD' or 'SSD M.2')", connection);
+			SqlCommand sqlCommand = new SqlCommand("SELECT CONCAT((SELECT m.name FROM Manufacturer m WHERE d.manufacturer_id = m.id), ' ', d.name) as 'Носитель информации' FROM Disk d WHERE type_id = ANY(SELECT id FROM Disk_type WHERE type = 'SSD' or type = 'SSD M.2')", connection);
 			ExecSelect(sqlCommand);
 
 			foreach (Control item in searchReviewOrOfferElements)

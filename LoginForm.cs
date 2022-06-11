@@ -31,9 +31,9 @@ namespace KursOragnisation
 					Hide();
 					mainForm.ShowDialog();
 				}
-				catch (Exception ecx)
+				catch (Exception)
 				{
-					MessageBox.Show("Error: " + ecx.Message);
+					MessageBox.Show("Неверный логин или пароль");
 				}
 			}
 		}
